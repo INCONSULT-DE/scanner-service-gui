@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Text, Separator } from '@fluentui/react';
-import { NeutralColors } from '@fluentui/theme';
+import PropertyAndValueText from './PropertyAndValueText';
 
 import configData from "../config.json";
 import { IVersionDetails } from '../models/IVersion';
@@ -81,10 +81,10 @@ export default class VersionDetails extends React.Component<any, any> {
         return (this.state.item.length > 0 ?
             <div>
                 <Separator />
-                <p><Text variant="mediumPlus"><b>ID:</b> {this.state.item[0].id}</Text></p>
-                <p><Text variant="mediumPlus"><b>Name:</b> {this.state.item[0].name}</Text></p>
-                <p><Text variant="mediumPlus"><b>Source Checksum:</b> {this.state.item[0].source_checksum}</Text></p>
-                <p><Text variant="mediumPlus"><b>Source Reference:</b> {this.state.item[0].source_reference}</Text></p>
+                <PropertyAndValueText property="ID" value={this.state.item[0].id} />
+                <PropertyAndValueText property="Name" value={this.state.item[0].name} />
+                <PropertyAndValueText property="Source Checksum" value={this.state.item[0].source_checksum} />
+                <PropertyAndValueText property="Source Reference" value={this.state.item[0].source_reference} />
                 <Separator />
                 <Text variant="mediumPlus"><b>Source Metadata:</b></Text>
                 <div style={{

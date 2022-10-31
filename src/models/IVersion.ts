@@ -1,6 +1,17 @@
+import { IContextualMenuProps } from "@fluentui/react";
+import { ReactElement } from "react";
+
+
 export default interface IVersion {
     id: number,
+    key: number;
     name: string,
+    status: string,
+    modified: Date,
+    modifiedLocaleString: string,
+    created: Date,
+    createdLocaleString: string,
+    documentId: number,
 }
 
 export interface IVersionDetails{
