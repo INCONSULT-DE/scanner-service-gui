@@ -44,7 +44,7 @@ export default class GlobalActions extends React.Component<any, any> {
             }}
           >
             <PivotItem headerText="Version Control" itemIcon="BuildQueueNew" itemKey="versions" />
-            <PivotItem headerText="File Upload" itemIcon="BulkUpload" itemKey="fileupload" />
+            <PivotItem headerText="Staging Area" itemIcon="BulkUpload" itemKey="stagingArea" />
             <PivotItem headerText="Similarity Calculations" itemIcon="BranchCompare" itemKey="similarityCalculation" />
             <PivotItem headerText="Sanner" itemIcon="SearchAndApps" itemKey="scanner" />
           </Pivot>

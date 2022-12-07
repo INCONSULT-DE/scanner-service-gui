@@ -3,31 +3,35 @@ import { Stack, IStackTokens, IStackStyles, } from '@fluentui/react';
 
 import ScannerItem from './ScannerItem';
 
-const stackTokens: IStackTokens = { childrenGap: 10 };
+const stackTokens: IStackTokens = { childrenGap: 20 };
 const containerStyles: Partial<IStackStyles> = {
-    root: {
-        margin: '0 auto',
-        width: "100%",
-        color: '#605e5c',
-        padding: 10,
-    },
+  root: {
+    margin: '0 auto',
+    width: "100%",
+    color: '#605e5c',
+    padding: 10,
+  },
 };
 
 export default class Scanner extends React.Component<any, any> {
-    public state = {
-        error: false,
-        errorMessage: "",
-        loading: false,
-    };
+  public state = {
+    error: false,
+    errorMessage: "",
+    loading: false,
+  };
 
-    public render() {
-        return (
-            <Stack horizontal tokens={stackTokens} styles={containerStyles}>
-                <ScannerItem title="Docuvera" scannerId=""  />
-                <ScannerItem title="Staging (File Share)" scannerId="staging_scanner" />
-            </Stack>
-        );
-    }
+  public render() {
+    return (
+      <Stack horizontal horizontalAlign="start" tokens={stackTokens} styles={containerStyles}>
+        <Stack.Item>
+          <ScannerItem token={this.props.token} title="Docuvera (CCDS)" scannerId="ccds_scanner" timedOutSession={() => this.props.timedOutSession()} />
+        </Stack.Item>
+        <Stack.Item>
+          <ScannerItem token={this.props.token} title="Staging (File Share)" scannerId="staging_scanner" timedOutSession={() => this.props.timedOutSession()} />
+        </Stack.Item>
+      </Stack>
+    );
+  }
 };
 /*
 

@@ -96,7 +96,7 @@ export default class Login extends React.Component<any, any> {
                 if (!response.ok) {
                     this.setState({ loginFailed: true, loggingIn: false });
                 } else {
-                    window.sessionStorage.setItem("similarity_auth_token",data.auth_token)
+                    window.sessionStorage.setItem("similarity_auth_token", data.auth_token)
                     this.props.loginSucceded(data.auth_token);
                 }
             })

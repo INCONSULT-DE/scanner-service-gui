@@ -21,12 +21,14 @@ export const App: React.FunctionComponent = () => {
 
   function timedOutSession() {
     setToken("");
+    window.sessionStorage.setItem("similarity_auth_token", "");
     setLoggedIn(false);
     setTimedOut(true);
   }
 
   function loggedOut() {
     setToken("");
+    window.sessionStorage.setItem("similarity_auth_token", "");
     setLoggedIn(false);
     setTimedOut(false);
   }

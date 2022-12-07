@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DetailsList, IGroup, IStackTokens, Dialog, DefaultButton, CommandButton, IContextualMenuProps, IContextualMenuItem, DialogFooter, DialogType, PrimaryButton, DetailsListLayoutMode, MarqueeSelection, Text, Selection, CommandBar, IStackStyles, ICommandBarItemProps, Panel, PanelType, INavLinkGroup, Nav, Stack } from '@fluentui/react';
+import { DetailsList, IGroup, IStackTokens, Dialog, DefaultButton, DialogFooter, DialogType, PrimaryButton, DetailsListLayoutMode, MarqueeSelection, Text, Selection, CommandBar, IStackStyles, ICommandBarItemProps, Panel, PanelType, INavLinkGroup, Nav, Stack } from '@fluentui/react';
 import { NeutralColors } from '@fluentui/theme';
 import PropertyAndValueText from './PropertyAndValueText';
 
@@ -8,8 +8,8 @@ import IDocument from '../models/IDocument';
 import IVersion from '../models/IVersion';
 import VersionDetails from './VersionDetails';
 import IPackage from '../models/IPackage';
-import MoveToPackageDialog from './MoveToPackageDialog';
-import CreatePackageDialog from './CreatePackageDialog';
+import MoveToPackageDialog from './Dialogs/MoveToPackageDialog';
+import CreatePackageDialog from './Dialogs/CreatePackageDialog';
 
 const stackTokens: IStackTokens = { childrenGap: 10 };
 const documentSelectionStackStyles: Partial<IStackStyles> = {
@@ -60,7 +60,8 @@ export default class VersionList extends React.Component<any, any> {
                 this.setState({ actions: actions, });
             }
             else {
-                const queryParameter = selectedItemIds.join("&version-ids=");
+                //const queryParameter = selectedItemIds.join("&version-ids=");
+                const queryParameter = selectedItemIds.join(",");
 
                 fetch(configData.SERVER_URL + '/available-actions?version-ids=' + queryParameter, requestOptions)
                     .then(async response => {
@@ -87,6 +88,11 @@ export default class VersionList extends React.Component<any, any> {
                             });
                             this.setState({ actions: actions });
                         }
+                    })
+                    .catch(error => {
+                        console.error(error);
+                        this.props.onErrorHappened();
+                        this.setState({ loading: true,  });
                     });
             }
         },
@@ -253,6 +259,11 @@ export default class VersionList extends React.Component<any, any> {
                     this.setState({ actionResultHeader: data.message, actionResultBody: actionResultText, showActionResultDialog: true });
                 }
             })
+            .catch(error => {
+                console.error(error);
+                this.props.onErrorHappened();
+                this.setState({ loading: true,  });
+            });
     }
 
 
@@ -586,16 +597,11 @@ export default class VersionList extends React.Component<any, any> {
                         }}
                     >
                         <Nav
-                            styles={{
-                                root: {
-                                    width: 200, position: "sticky", top: 80
-                                }
-                            }}
+                            styles={{ root: { width: 200, position: "sticky", top: 80, maxHeight: window.innerHeight - 160, marginBottom: 10 } }}
                             groups={this.state.navLinkGroups}
                             onLinkClick={(e, item) => this.selectedPackage(item?.key)}
                         />
                         <DefaultButton text="Create new Package" onClick={() => this.setState({ showCreatePackageDialog: true })} iconProps={{ iconName: 'NewFolder' }} />
-
                     </div>
                     {
                         this.state.versions.length < 1 ?

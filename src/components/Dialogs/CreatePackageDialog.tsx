@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { Dialog, DialogType, Toggle, DialogFooter, IChoiceGroupOption, PrimaryButton, TextField } from '@fluentui/react';
-import IPackage from '../models/IPackage';
+import { Dialog, DialogType, Toggle, DialogFooter, PrimaryButton, TextField } from '@fluentui/react';
 
-import configData from "../config.json";
+import configData from "../../config.json";
 
 export default class CreatePackageDialog extends React.Component<any, any> {
     public state = {
@@ -25,9 +24,9 @@ export default class CreatePackageDialog extends React.Component<any, any> {
             body: JSON.stringify({
                 "add_document": [],
                 "include_all_unassigned": this.state.includeUnassigned,
-                "package_config": this.state.packageConfig,
+                //"package_config": this.state.packageConfig,
                 "package_name": this.state.packageName,
-                "package_status": this.state.packageStatus,
+                //"package_status": this.state.packageStatus,
                 "remove_document": []
             })
         };
@@ -46,7 +45,6 @@ export default class CreatePackageDialog extends React.Component<any, any> {
                         this.setState({ loading: true, });
                     }
                 } else {
-                    console.log(data);
                     this.setState({
                         creatingPackage: false,
                     });
@@ -57,14 +55,6 @@ export default class CreatePackageDialog extends React.Component<any, any> {
 
 
     public render() {
-
-        const options = new Array<IChoiceGroupOption>();
-        if (this.props.packages) {
-            this.props.packages.forEach((packageItem: IPackage, index: number) => {
-                options.push({ key: packageItem.id.toString(), text: packageItem.name })
-            });
-        }
-
         return (
             <Dialog
                 hidden={this.props.hidden}
@@ -76,12 +66,12 @@ export default class CreatePackageDialog extends React.Component<any, any> {
                 }}
                 modalProps={{ isBlocking: true }}
             >
-
                 <Toggle label="Include all unassigned documents" defaultChecked={this.state.includeUnassigned} onText="On" offText="Off" onChange={() => this.setState({ includeUnassigned: !this.state.includeUnassigned })} />
                 <TextField disabled={this.state.creatingPackage} label="Package name" required onChange={(e: any, value?: string) => this.setState({ packageName: value ? value : "" })} />
-                <TextField disabled={this.state.creatingPackage} label="Package config" onChange={(e: any, value?: string) => this.setState({ packageConfig: value ? value : "" })} />
-                <TextField disabled={this.state.creatingPackage} label="Package status" onChange={(e: any, value?: string) => this.setState({ packageStatus: value ? value : "" })} />
-
+                {
+                    //<TextField disabled={this.state.creatingPackage} label="Package config" onChange={(e: any, value?: string) => this.setState({ packageConfig: value ? value : "" })} />
+                    //<TextField disabled={this.state.creatingPackage} label="Package status" onChange={(e: any, value?: string) => this.setState({ packageStatus: value ? value : "" })} />
+                }
                 <DialogFooter>
                     <PrimaryButton disabled={this.state.creatingPackage || this.state.packageName === ""} onClick={() => this.createPackage()} text="Create Package" />
                 </DialogFooter>

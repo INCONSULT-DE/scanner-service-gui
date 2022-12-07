@@ -1,36 +1,75 @@
 import * as React from 'react';
-import { Stack, IStackTokens, IStackStyles, Text, PrimaryButton } from '@fluentui/react';
-import { NeutralColors } from '@fluentui/theme';
+import { Stack, Text, PrimaryButton } from '@fluentui/react';
+import { NeutralColors, SharedColors } from '@fluentui/theme';
 
-const stackTokens: IStackTokens = { childrenGap: 10 };
-const scannerBoxStyles: Partial<IStackStyles> = {
-    root: {
-        margin: '0 auto',
-        width: "100%",
-        color: '#605e5c',
-        padding: 10,
-        backgroundColor: NeutralColors.white,
-        boxShadow: "0 1.6px 3.6px 0 rgb(0 0 0 / 13%), 0 0.3px 0.9px 0 rgb(0 0 0 / 11%)",
-    },
-};
+import StartStagingScannerDialog from './Dialogs/StartStagingScannerDialog';
+import StartCCDSScannerDialog from './Dialogs/StartCCDSScannerDialog';
+
 
 export default class ScannerItem extends React.Component<any, any> {
     public state = {
         error: false,
         errorMessage: "",
         loading: false,
+        showStartScannerDialog: false,
+        scannerStarted: false,
     };
 
     public render() {
         return (
-            <Stack horizontal horizontalAlign='space-between' tokens={stackTokens} styles={scannerBoxStyles}>
+            <div style={{
+                margin: '0 auto',
+                width: "auto",
+                minWidth: 500,
+                color: '#605e5c',
+                padding: 20,
+                backgroundColor: NeutralColors.white,
+                boxShadow: "0 1.6px 3.6px 0 rgb(0 0 0 / 13%), 0 0.3px 0.9px 0 rgb(0 0 0 / 11%)",
+            }}>
+                <Text variant='large'>{this.props.title}</Text>
+                {
+                    this.state.scannerStarted ?
+                        <Text variant='medium' color={SharedColors.green20}>Scanner started successfull.</Text>
+                        :
+                        null
+                }
                 <Stack>
-                    <Text variant='large'>{this.props.title}</Text>
-                    <Text variant='medium'>Stauts: currently not running</Text>
-                    <Text variant='medium'>Last run: 12.09.2022</Text>
+                    <PrimaryButton style={{ width: 200, marginTop: 20 }} text='Start Scanner' onClick={() => this.setState({ showStartScannerDialog: true })} />
                 </Stack>
-                <PrimaryButton text='Start Scanner' />
-            </Stack>
+                {
+                    this.props.scannerId === "staging_scanner"
+                        ?
+                        <StartStagingScannerDialog
+                            hidden={!this.state.showStartScannerDialog}
+                            scannerName={this.props.title}
+                            token={this.props.token}
+                            scannerId={this.props.scannerId}
+                            timedOutSession={() => this.props.timedOutSession()}
+                            onDismiss={() => this.setState({ showStartScannerDialog: false })}
+                            onStarted={() => {
+                                this.setState({ showStartScannerDialog: false, scannerStarted: true });
+                                setTimeout(() => {
+                                    this.setState({ scannerStarted: false });
+                                }, 3000);
+                            }}
+                        />
+                        :
+                        <StartCCDSScannerDialog
+                            hidden={!this.state.showStartScannerDialog}
+                            scannerName={this.props.title}
+                            token={this.props.token}
+                            scannerId={this.props.scannerId}
+                            timedOutSession={() => this.props.timedOutSession()}
+                            onDismiss={() => this.setState({ showStartScannerDialog: false })}
+                            onStarted={() => {
+                                this.setState({ showStartScannerDialog: false, scannerStarted: true });
+                                setTimeout(() => {
+                                    this.setState({ scannerStarted: false });
+                                }, 3000);
+                            }}
+                        />
+                }
+            </div>
         );
     }
 };

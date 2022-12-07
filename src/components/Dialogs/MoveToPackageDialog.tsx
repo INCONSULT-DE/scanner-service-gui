@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Dialog, DialogType, Text, DialogFooter, IChoiceGroupOption, PrimaryButton, ChoiceGroup } from '@fluentui/react';
-import IPackage from '../models/IPackage';
+import IPackage from '../../models/IPackage';
 
-import configData from "../config.json";
+import configData from "../../config.json";
 
 export default class MoveToPackageDialog extends React.Component<any, any> {
     public state = {
@@ -43,7 +43,6 @@ export default class MoveToPackageDialog extends React.Component<any, any> {
                             this.setState({ loading: true, });
                         }
                     } else {
-                        console.log(data);
                         movedFiles++;
                         this.setState({ movedFiles: movedFiles })
                     }

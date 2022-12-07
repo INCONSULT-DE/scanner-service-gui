@@ -7,7 +7,7 @@ import GlobalActions from '../components/GlobalActions';
 import VersionList from '../components/VersionList';
 import SimilarityCalculationList from '../components/SimilarityCalculationList';
 import Scanner from '../components/Scanner';
-import FileUpload from '../components/FileUpload';
+import StagingArea from '../components/StagingArea';
 
 const stackTokens: IStackTokens = { childrenGap: 10 };
 
@@ -26,8 +26,8 @@ export default class ApplicationOverview extends React.Component<any, any> {
                     timedOutSession={() => this.props.timedOutSession()}
                     onErrorHappened={() => this.setState({ error: true, errorMessage: "Sorry, we had a problem while loading the documents! Please reload the page and retry.", })}
                 />;
-            case "fileupload":
-                return <FileUpload
+            case "stagingArea":
+                return <StagingArea
                     token={this.props.token}
                     timedOutSession={() => this.props.timedOutSession()}
                     onErrorHappened={() => this.setState({ error: true, errorMessage: "Sorry, we had a problem while uploading the files! Please reload the page and retry.", })}
@@ -97,7 +97,12 @@ export default class ApplicationOverview extends React.Component<any, any> {
                 const data = isJson && await response.json();
                 // check for error response
                 if (!response.ok) {
-                    // todo Error Handling
+                    console.error(response);
+                    this.setState({
+                        error: true,
+                        errorMessage: "Sorry, we had a problem while logging you out! Please reload the page and retry.",
+                        loading: false,
+                    });
                 } else {
 
                     if (data.status === "success") {
